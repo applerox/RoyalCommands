@@ -46,6 +46,12 @@ public class CmdWarp implements CommandExecutor {
             p.sendMessage(MessageColor.NEGATIVE + "World doesn't exist!");
             return null;
         }
+        
+        if (cm.getBoolean("warps." + name + ".admin") == true && !plugin.isAuthorized(p, "rcmds.warp.admin") {
+            p.sendMessage(MessageColor.NEGATIVE + "No such warp!");
+            return null;
+        }
+        
         try {
             return new Location(warpW, warpX, warpY, warpZ, warpYaw, warpPitch);
         } catch (Exception e) {
