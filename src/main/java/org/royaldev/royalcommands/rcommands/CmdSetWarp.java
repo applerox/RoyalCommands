@@ -34,6 +34,16 @@ public class CmdSetWarp implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
+            
+            boolean adminOnly = false;
+            if (args[1].startsWith("-a")) {
+                if (!plugin.isAuthorized(cs, "rcmds.setwarp.admin") {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                adminOnly = true;
+            }
+            
             Player p = (Player) cs;
 
             double locX = p.getLocation().getX();
@@ -53,7 +63,8 @@ public class CmdSetWarp implements CommandExecutor {
             warps.set("warps." + name + ".pitch", locPitch);
             warps.set("warps." + name + ".yaw", locYaw);
             warps.set("warps." + name + ".w", locW);
-            p.sendMessage(MessageColor.POSITIVE + "Warp \"" + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + "\" set.");
+            if (adminOnly) warps.set("warps." + name + ".admin", true);
+            p.sendMessage(MessageColor.POSITIVE + ((adminOnly) ? "Admin " : "") + "Warp \"" + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + "\" set.");
             return true;
         }
         return false;
